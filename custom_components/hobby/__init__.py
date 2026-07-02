@@ -6,7 +6,6 @@ import logging
 import uuid
 from pathlib import Path
 
-from homeassistant.components.http import HomeAssistantView
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall
 
@@ -207,16 +206,16 @@ class HobbyStore:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    # Serve hobby-card.js from custom_components/hobby/
-    card_path = Path(__file__).parent / "hobby-card.js"
-    if card_path.exists():
-        async def serve_card(request):
-            from aiohttp import web
-            return web.Response(
-                text=card_path.read_text(encoding="utf-8"),
-                content_type="application/javascript",
-            )
-        hass.http.register_static_path("/local/hobby-card.js", card_path)
+    # Copy hobby-card.js to /config/www/ if not already there
+    card_source = Path(__file__).parent / "hobby-card.js"
+    card_dest = Path(hass.config.config_dir) / "www" / "hobby-card.js"
+    if card_source.exists() and not card_dest.exists():
+        try:
+            card_dest.parent.mkdir(parents=True, exist_ok=True)
+            card_dest.write_text(card_source.read_text(encoding="utf-8"), encoding="utf-8")
+            _LOGGER.info("hobby-card.js kopierad till %s", card_dest)
+        except Exception as exc:
+            _LOGGER.warning("Kunde inte kopiera hobby-card.js: %s", exc)
 
     store = HobbyStore(hass, entry)
     await store.async_load()
