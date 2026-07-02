@@ -1,0 +1,9 @@
+{
+  "domain": "hobby",
+  "name": "Hobby",
+  "codeowners": [],
+  "config_flow": true,
+  "documentation": "",
+  "iot_class": "calculated",
+  "version": "1.0.0"
+}

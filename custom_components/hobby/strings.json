@@ -1,0 +1,19 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Lägg till hobby",
+        "description": "Konfigurera en ny hobbyverksamhet att bokföra.",
+        "data": {
+          "name": "Namn",
+          "data_dir": "Sökväg till data"
+        }
+      }
+    },
+    "error": {
+      "empty_name": "Namn får inte vara tomt",
+      "empty_path": "Sökväg får inte vara tom",
+      "cannot_create": "Kunde inte skapa mappen. Kontrollera sökvägen."
+    }
+  }
+}
