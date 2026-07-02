@@ -3,9 +3,15 @@
     "step": {
       "user": {
         "title": "Lägg till hobby",
-        "description": "Konfigurera en ny hobbyverksamhet att bokföra.",
+        "description": "Vad heter hobbyverksamheten?",
         "data": {
-          "name": "Namn",
+          "name": "Namn"
+        }
+      },
+      "data_dir": {
+        "title": "Datafil",
+        "description": "Var ska data sparas?",
+        "data": {
           "data_dir": "Sökväg till data"
         }
       }
