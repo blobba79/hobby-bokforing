@@ -1,9 +1,10 @@
 {
   "domain": "hobby",
-  "name": "Hobby",
+  "name": "Hobby Bokföring",
   "codeowners": [],
   "config_flow": true,
   "documentation": "",
+  "dependencies": [],
   "iot_class": "calculated",
   "version": "1.0.0"
 }
