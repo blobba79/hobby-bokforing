@@ -6,6 +6,7 @@ import logging
 import uuid
 from pathlib import Path
 
+from homeassistant.components.http import HomeAssistantView
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall
 
@@ -206,6 +207,17 @@ class HobbyStore:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    # Serve hobby-card.js from custom_components/hobby/
+    card_path = Path(__file__).parent / "hobby-card.js"
+    if card_path.exists():
+        async def serve_card(request):
+            from aiohttp import web
+            return web.Response(
+                text=card_path.read_text(encoding="utf-8"),
+                content_type="application/javascript",
+            )
+        hass.http.register_static_path("/local/hobby-card.js", card_path)
+
     store = HobbyStore(hass, entry)
     await store.async_load()
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = store
