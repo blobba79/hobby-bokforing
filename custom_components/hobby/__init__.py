@@ -217,7 +217,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             name = "hobby-card-js"
             requires_auth = False
 
-            def get(self, request: web.Request) -> web.Response:
+            async def get(self, request: web.Request) -> web.Response:
                 return web.Response(
                     text=card_path.read_text(encoding="utf-8"),
                     content_type="application/javascript",
