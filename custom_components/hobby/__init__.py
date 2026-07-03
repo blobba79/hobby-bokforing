@@ -8,6 +8,7 @@ from pathlib import Path
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.components import lovelace
 
 from .const import CONF_DATA_DIR, DOMAIN
 
@@ -215,6 +216,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             card_dest.write_text(card_source.read_text(encoding="utf-8"), encoding="utf-8")
         except Exception as exc:
             _LOGGER.warning("Kunde inte kopiera hobby-card.js: %s", exc)
+
+    # Register the card resource automatically
+    try:
+        await lovelace.async_register_resource(
+            hass, {"url": "/local/hobby-card.js", "type": "module"}
+        )
+    except Exception:
+        pass  # Already registered or lovelace not ready
 
     store = HobbyStore(hass, entry)
     await store.async_load()
