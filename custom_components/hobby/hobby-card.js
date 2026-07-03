@@ -27,7 +27,9 @@ class HobbyCard extends HTMLElement {
   }
 
   _call(service, data) {
-    this._hass.callService("hobby", service, data);
+    this._hass.callService("hobby", service, data).then(() => {
+      setTimeout(() => this.render(), 500);
+    });
   }
 
   _fmt(n) {
