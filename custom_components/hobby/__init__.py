@@ -206,10 +206,15 @@ class HobbyStore:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    # Serve integration directory as static path at /hobby-local/
-    await hass.http.async_register_static_paths(
-        [{"url_path": "/hobby-local", "path": str(Path(__file__).parent)}]
-    )
+    # Copy hobby-card.js to /config/www/
+    card_source = Path(__file__).parent / "hobby-card.js"
+    card_dest = Path(hass.config.config_dir) / "www" / "hobby-card.js"
+    if card_source.exists():
+        try:
+            card_dest.parent.mkdir(parents=True, exist_ok=True)
+            card_dest.write_text(card_source.read_text(encoding="utf-8"), encoding="utf-8")
+        except Exception as exc:
+            _LOGGER.warning("Kunde inte kopiera hobby-card.js: %s", exc)
 
     store = HobbyStore(hass, entry)
     await store.async_load()
