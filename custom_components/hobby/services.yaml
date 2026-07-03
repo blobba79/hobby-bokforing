@@ -1,0 +1,140 @@
+add_income:
+  name: Lägg till intäkt
+  description: Lägger till en intäktsrad
+  fields:
+    datum:
+      name: Datum
+      description: Datum (ÅÅÅÅ-MM-DD)
+      required: true
+      example: "2026-06-01"
+    bukettyp:
+      name: Bukettyp
+      description: Typ av bukett
+      required: true
+    antal:
+      name: Antal
+      description: Antal styck
+      required: false
+    pris:
+      name: Pris
+      description: Pris per styck
+      required: false
+
+edit_income:
+  name: Redigera intäkt
+  description: Redigerar en befintlig intäktsrad
+  fields:
+    id:
+      name: ID
+      description: Postens ID
+      required: true
+    datum:
+      name: Datum
+      required: false
+    bukettyp:
+      name: Bukettyp
+      required: false
+    antal:
+      name: Antal
+      required: false
+    pris:
+      name: Pris
+      required: false
+
+delete_income:
+  name: Ta bort intäkt
+  description: Tar bort en intäktsrad
+  fields:
+    id:
+      name: ID
+      description: Postens ID
+      required: true
+
+add_expense:
+  name: Lägg till utgift
+  description: Lägger till en utgiftsrad
+  fields:
+    datum:
+      name: Datum
+      description: Datum (ÅÅÅÅ-MM-DD)
+      required: true
+    kategori:
+      name: Kategori
+      required: true
+    butik:
+      name: Butik
+      required: false
+    belopp:
+      name: Belopp
+      required: true
+
+edit_expense:
+  name: Redigera utgift
+  description: Redigerar en befintlig utgiftsrad
+  fields:
+    id:
+      name: ID
+      required: true
+    datum:
+      name: Datum
+      required: false
+    kategori:
+      name: Kategori
+      required: false
+    butik:
+      name: Butik
+      required: false
+    belopp:
+      name: Belopp
+      required: false
+
+delete_expense:
+  name: Ta bort utgift
+  description: Tar bort en utgiftsrad
+  fields:
+    id:
+      name: ID
+      required: true
+
+add_option:
+  name: Lägg till alternativ
+  description: Lägger till ett värde i en inställningslista
+  fields:
+    listtyp:
+      name: Lista
+      description: "kategorier, butiker eller bukettyper"
+      required: true
+    varde:
+      name: Värde
+      required: true
+
+remove_option:
+  name: Ta bort alternativ
+  description: Tar bort ett värde ur en inställningslista
+  fields:
+    listtyp:
+      name: Lista
+      required: true
+    varde:
+      name: Värde
+      required: true
+
+import_data:
+  name: Importera data
+  description: Importerar data från JSON
+  fields:
+    intakter:
+      name: Intäkter
+      required: false
+    utgifter:
+      name: Utgifter
+      required: false
+    kategorier:
+      name: Kategorier
+      required: false
+    butiker:
+      name: Butiker
+      required: false
+    bukettyper:
+      name: Bukettyper
+      required: false
