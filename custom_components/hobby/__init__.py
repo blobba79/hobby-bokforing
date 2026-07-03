@@ -206,15 +206,17 @@ class HobbyStore:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    # Copy hobby-card.js to /config/www/
+    # Symlink from www/ to integration dir – all files maintained in one place
     card_source = Path(__file__).parent / "hobby-card.js"
     card_dest = Path(hass.config.config_dir) / "www" / "hobby-card.js"
     if card_source.exists():
         try:
             card_dest.parent.mkdir(parents=True, exist_ok=True)
-            card_dest.write_text(card_source.read_text(encoding="utf-8"), encoding="utf-8")
+            if card_dest.exists() or card_dest.is_symlink():
+                card_dest.unlink()
+            card_dest.symlink_to(card_source)
         except Exception as exc:
-            _LOGGER.warning("Kunde inte kopiera hobby-card.js: %s", exc)
+            _LOGGER.warning("Kunde inte skapa symlink: %s", exc)
 
     store = HobbyStore(hass, entry)
     await store.async_load()
