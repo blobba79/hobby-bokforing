@@ -6,6 +6,7 @@ import logging
 import uuid
 from pathlib import Path
 
+from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall
 
@@ -206,17 +207,10 @@ class HobbyStore:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    # Symlink from www/ to integration dir – all files maintained in one place
-    card_source = Path(__file__).parent / "hobby-card.js"
-    card_dest = Path(hass.config.config_dir) / "www" / "hobby-card.js"
-    if card_source.exists():
-        try:
-            card_dest.parent.mkdir(parents=True, exist_ok=True)
-            if card_dest.exists() or card_dest.is_symlink():
-                card_dest.unlink()
-            card_dest.symlink_to(card_source)
-        except Exception as exc:
-            _LOGGER.warning("Kunde inte skapa symlink: %s", exc)
+    # Serve integration directory as static path – all files stay in one place
+    await hass.http.async_register_static_paths([
+        StaticPathConfig("/hobby-local", str(Path(__file__).parent), False)
+    ])
 
     store = HobbyStore(hass, entry)
     await store.async_load()
