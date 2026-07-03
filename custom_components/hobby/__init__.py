@@ -207,10 +207,8 @@ class HobbyStore:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Serve integration directory as static path at /hobby-local/
-    await hass.http.async_register_static_path(
-        url_path="/hobby-local",
-        path=str(Path(__file__).parent),
-        cache_headers=True,
+    await hass.http.async_register_static_paths(
+        [{"url_path": "/hobby-local", "path": str(Path(__file__).parent)}]
     )
 
     store = HobbyStore(hass, entry)
