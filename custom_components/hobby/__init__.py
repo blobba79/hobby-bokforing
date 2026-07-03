@@ -206,17 +206,12 @@ class HobbyStore:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    # Symlink hobby-card.js from www/ to this integration directory
-    card_source = Path(__file__).parent / "hobby-card.js"
-    card_dest = Path(hass.config.config_dir) / "www" / "hobby-card.js"
-    if card_source.exists():
-        try:
-            card_dest.parent.mkdir(parents=True, exist_ok=True)
-            if card_dest.exists():
-                card_dest.unlink()
-            card_dest.symlink_to(card_source)
-        except Exception as exc:
-            _LOGGER.warning("Kunde inte skapa symlink för hobby-card.js: %s", exc)
+    # Serve integration directory as static path at /hobby-local/
+    await hass.http.async_register_static_path(
+        url_path="/hobby-local",
+        path=str(Path(__file__).parent),
+        cache_headers=True,
+    )
 
     store = HobbyStore(hass, entry)
     await store.async_load()
